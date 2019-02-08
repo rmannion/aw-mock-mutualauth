@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import AppHeader from './components/AppHeader';
 import Home from './pages/Home';
-import Config from './pages/Config';
+import Tokens from './pages/Tokens';
 
 const styles = theme => ({
     main: {
@@ -22,7 +22,7 @@ const App = ({ classes }) => (
 	<CssBaseline />
 	<AppHeader />
 	<main className={classes.main}>
-	    <Config />
+	    <Tokens />
 	</main>
     </Fragment>
 );

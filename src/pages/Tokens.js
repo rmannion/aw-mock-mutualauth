@@ -35,7 +35,7 @@ const styles = theme => ({
 
 const API = process.env.REACT_APP_API || 'http://www.zdlocal.com:3001';
 
-class Config extends Component {
+class Tokens extends Component {
     state = {
 	loading: true,
 	tokens: []
@@ -134,5 +134,5 @@ class Config extends Component {
 export default compose(
     withRouter,
     withStyles(styles),
-)(Config);
+)(Tokens);
 
