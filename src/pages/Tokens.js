@@ -111,7 +111,7 @@ class Tokens extends Component {
 			</List>
 		    </Paper>
 		) : (
-		    this.state.loading == false && <Typography variant="subheading">No tokens</Typography>
+		    this.state.loading === false && <Typography variant="subheading">No tokens</Typography>
 		)}
 
 		<Button

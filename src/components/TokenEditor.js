@@ -46,7 +46,7 @@ const TokenEditor = ({ classes, token, onSave, history }) => (
 				{({ input }) => <TextField label="Mutual Auth Token" autoFocus {...input} />}
 			    </Field>
 			    <Field name="consumerAuthToken">
-				{({ input }) => <TextField label="Consumer Auth Token" {...input} />}
+				{({ input }) => <TextField label="Consumer Auth Token" className={classes.marginTop} {...input} />}
 			    </Field>
 			</CardContent>
 			<CardActions>
