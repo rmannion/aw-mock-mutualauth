@@ -11,9 +11,12 @@ import {
     ListItemSecondaryAction,
 } from '@material-ui/core';
 import { compose } from 'recompose';
-import { withRouter, Route, Link } from 'react-router-dom';
+import { withRouter, Route, Link, Redirect } from 'react-router-dom';
 import { Delete as DeleteIcon, Add as AddIcon } from '@material-ui/icons';
 import moment from 'moment';
+import { find } from 'lodash';
+
+import TokenEditor from '../components/TokenEditor.js';
 
 const styles = theme => ({
     tokens: {
@@ -49,6 +52,7 @@ class Config extends Component {
 		body: body && JSON.stringify(body),
 		headers: {
 		    'accept': 'application/json',
+		    'Content-Type': 'application/json',
 		},
 	    });
 	    return await res.json();
@@ -61,10 +65,25 @@ class Config extends Component {
 	this.setState({ loading: false, tokens: await this.fetch('get', '/token') });
     }
 
+    saveToken = async (token) => {
+	if (token.mutualAuthToken) {
+	    await this.fetch('post', `/token/${token.mutualAuthToken}`, { consumerAuthToken: token.consumerAuthToken });
+	}
+	this.props.history.goBack();
+	this.getTokens();
+    }
+
     async deleteToken(token) {
 	await this.fetch('delete', `/token/${token.mutualAuthToken}`);
 	this.getTokens();
     }
+
+    renderTokenEditor = ({ match: { params: { id } } }) => {
+	if (this.state.loading) return null;
+	const token = find(this.state.tokens, { mutualAuthToken: id });
+	if (!token && id !== 'new') return <Redirect to="/" />;
+	return <TokenEditor token={token} onSave={this.saveToken} />;
+    };
 
     render() {
 	const { classes } = this.props;
@@ -79,7 +98,7 @@ class Config extends Component {
 			    {this.state.tokens.map(token => (
 				<ListItem key={token.mutualAuthToken} button component={Link} to={`/token/${token.mutualAuthToken}`}>
 				    <ListItemText
-					primary={token.mutualAuthToken}
+					primary={token.mutualAuthToken + " / " + token.consumerAuthToken}
 					secondary={token.dateCreated && `Updated ${moment(token.dateCreated).fromNow()}`}
 				    />
 				    <ListItemSecondaryAction>
@@ -99,7 +118,10 @@ class Config extends Component {
 		    variant="fab"
 		    color="secondary"
 		    aria-label="add"
-		    className={classes.fab}>
+		    className={classes.fab}
+		    component={Link}
+		    to="/token/new"
+		>
 		    <AddIcon />
 		</Button>
 
