@@ -32,11 +32,11 @@ app.use(async (req, res, next) => {
 
 app.post('/', (req, res) => {
     let mutualAuthToken = req.header('useraccesstoken');
-    let consumerAuthToken = tokens[mutualAuthToken];
-    if (consumerAuthToken === undefined) {
+    let token = tokens[mutualAuthToken];
+    if (token === undefined) {
 	res.status(404).send();
     } else {
-	res.status(200).json({'userAccessToken': consumerAuthToken});
+	res.status(200).json({'userAccessToken': token.consumerAuthToken});
     }
 });
 
