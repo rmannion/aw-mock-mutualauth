@@ -1,28 +1,27 @@
 import React, { Fragment } from 'react';
-import {
-    CssBaseline,
-    withStyles,
-} from '@material-ui/core';
+import { CssBaseline, withStyles, } from '@material-ui/core';
 import AppHeader from './components/AppHeader';
 import Tokens from './pages/Tokens';
 
 const styles = theme => ({
-    main: {
-	padding: 3 * theme.spacing.unit,
-	[theme.breakpoints.down('xs')]: {
-	    padding: 2 * theme.spacing.unit,
-	},
+  main: {
+    padding: 3 * theme.spacing.unit,
+    [theme.breakpoints.down('xs')]: {
+      padding: 2 * theme.spacing.unit,
     },
+  },
 });
 
+const API = process.env.REACT_APP_API;
+
 const App = ({ classes }) => (
-    <Fragment>
-	<CssBaseline />
-	<AppHeader />
-	<main className={classes.main}>
-	    <Tokens />
-	</main>
-    </Fragment>
+  <Fragment>
+    <CssBaseline />
+    <AppHeader />
+    <main className={classes.main}>
+      <Tokens api={API} />
+    </main>
+  </Fragment>
 );
 
 export default withStyles(styles)(App);
