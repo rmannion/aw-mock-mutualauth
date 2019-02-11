@@ -57,7 +57,7 @@ const EventTable = ({ events }) =>
             <TableCell>{e.date}</TableCell>
             <TableCell>{e.ip}</TableCell>
             <TableCell>{e.mutualAuthToken}</TableCell>
-            <TableCell>{e.consumerAuthToken}</TableCell>
+            <TableCell>{e.consumerAuthToken || <em>none</em>}</TableCell>
           </TableRow>
         )}
       </TableBody>
