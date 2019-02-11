@@ -89,7 +89,7 @@ app.get('/events', (req, res) => {
   res.status(200).send(state.events);
 });
 
-const port = process.env.SERVER_PORT || 3001;
+const port = process.env.API_PORT || 3001;
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

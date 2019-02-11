@@ -12,14 +12,14 @@ const styles = theme => ({
   },
 });
 
-const API = process.env.REACT_APP_API;
-
 const App = ({ classes }) => (
   <Fragment>
     <CssBaseline />
     <AppHeader />
     <main className={classes.main}>
-      <Tokens api={API} />
+      <Tokens
+        api={process.env.REACT_APP_API_BASE}
+        refreshInterval={process.env.REACT_APP_EVENT_REFRESH_INTERVAL || 0} />
     </main>
   </Fragment>
 );

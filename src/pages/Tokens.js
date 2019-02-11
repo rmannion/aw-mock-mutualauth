@@ -84,7 +84,7 @@ class Tokens extends Component {
   };
 
   render() {
-    const { api, classes } = this.props;
+    const { api, classes, refreshInterval } = this.props;
     const { tokens } = this.state;
 
     return (
@@ -100,7 +100,7 @@ class Tokens extends Component {
         <Typography variant='display1' className={classes.eventsHeader}>Events</Typography>
 
         <Paper elevation={1} className={classes.tokens}>
-          <RefreshingEventTable api={api} refreshInterval={0} />
+          <RefreshingEventTable api={api} refreshInterval={refreshInterval} />
         </Paper>
 
         <Button
