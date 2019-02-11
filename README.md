@@ -23,9 +23,8 @@ If using Apache, you can proxy requests to a subdomain like so:
   ProxyPreserveHost on
   ProxyPass / http://localhost:3001/
   ProxyPassReverse / http://localhost:3001/
-
   ...
-</VirtualHost *:80>
+</VirtualHost>
 ```
 
 Which entails this change to your `.env` file:
