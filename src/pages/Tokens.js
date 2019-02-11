@@ -9,6 +9,11 @@ import {
     ListItem,
     ListItemText,
     ListItemSecondaryAction,
+    Table,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody
 } from '@material-ui/core';
 import { compose } from 'recompose';
 import { withRouter, Route, Link, Redirect } from 'react-router-dom';
@@ -34,6 +39,69 @@ const styles = theme => ({
 });
 
 const API = process.env.REACT_APP_API || 'http://www.zdlocal.com:3001';
+
+const EventTable = ({ events }) =>
+  <Paper>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Date</TableCell>
+          <TableCell>IP</TableCell>
+          <TableCell>Mutual Auth Token</TableCell>
+          <TableCell>Consumer Auth Token</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        { events.map(e =>
+          <TableRow key={e.date}>
+            <TableCell>{e.date}</TableCell>
+            <TableCell>{e.ip}</TableCell>
+            <TableCell>{e.mutualAuthToken}</TableCell>
+            <TableCell>{e.consumerAuthToken}</TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  </Paper>
+
+class RefreshingEventTable extends Component {
+  state = {
+    events: []
+  }
+
+  componentDidMount() {
+    this.getEvents();
+  }
+
+  async fetch(method, endpoint, body) {
+    try {
+      const res = await fetch(`${API}${endpoint}`, {
+        method,
+        body: body && JSON.stringify(body),
+        headers: {
+          'accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      return await res.json();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getEvents() {
+    this.setState({ events: await this.fetch('get', '/events') });
+    setTimeout(() => this.getEvents(), 2500);
+  }
+
+  render() {
+    const { events } = this.state;
+
+    return (
+      <EventTable events={events} />
+    )
+  }
+}
 
 class Tokens extends Component {
     state = {
@@ -113,6 +181,15 @@ class Tokens extends Component {
 		) : (
 		    this.state.loading === false && <Typography variant="subheading">No tokens</Typography>
 		)}
+
+                <br />
+                <br />
+
+		<Typography variant="display1">Events</Typography>
+
+                <Paper elevation={1} className={classes.tokens}>
+                  <RefreshingEventTable />
+                </Paper>
 
 		<Button
 		    variant="fab"
