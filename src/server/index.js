@@ -48,7 +48,7 @@ app.post('/', (req, res) => {
     consumerAuthToken: token && token.consumerAuthToken,
     ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
   };
-  state.events.unshift(event);
+  state.events = [event].concat(state.events.slice(0, 99))
 
   if (token === undefined) {
     res.status(404).send();
@@ -60,12 +60,14 @@ app.post('/', (req, res) => {
 app.post('/token/:mutualAuthToken', (req, res) => {
   if (req.body.consumerAuthToken === undefined) {
     res.status(400).send();
+  } else if (Object.keys(state.tokens).length >= 100) {
+    res.status(507).send();
   } else {
     state.tokens[req.params.mutualAuthToken] = {
       'dateCreated': Date(),
       'consumerAuthToken': req.body.consumerAuthToken,
     };
-    res.status(200).send();
+    res.status(201).send();
   }
 });
 
