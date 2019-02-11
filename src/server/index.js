@@ -20,6 +20,10 @@ tokens = {
 	'dateCreated': Date(),
 	'consumerAuthToken': 'consumerAuthTokenB',
     },
+    '*': {
+	'dateCreated': Date(),
+	'consumerAuthToken': 'fallback',
+    },
 };
 
 app.use(async (req, res, next) => {
@@ -32,7 +36,7 @@ app.use(async (req, res, next) => {
 
 app.post('/', (req, res) => {
     let mutualAuthToken = req.header('useraccesstoken');
-    let token = tokens[mutualAuthToken];
+    let token = tokens[mutualAuthToken] || tokens['*'];
     if (token === undefined) {
 	res.status(404).send();
     } else {
