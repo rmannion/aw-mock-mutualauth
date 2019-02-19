@@ -53,7 +53,7 @@ app.post('/', (req, res) => {
   if (token === undefined) {
     res.status(404).send();
   } else {
-    res.status(200).json({'userAccessToken': token.consumerAuthToken});
+    res.status(200).json({'userReferenceId': token.consumerAuthToken});
   }
 });
 
